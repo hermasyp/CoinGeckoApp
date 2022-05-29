@@ -9,6 +9,6 @@ Written with love by Muhammad Hermas Yuda Pamungkas
 Github : https://github.com/hermasyp
  **/
 interface CoinGeckoDataSource {
-    suspend fun getCoinList(): Flow<List<Coin>>
-    suspend fun getCoinDetail(coinID: String): Flow<CoinDetailResponse>
+    suspend fun getCoinList(): List<Coin>
+    suspend fun getCoinDetail(coinID: String): CoinDetailResponse
 }

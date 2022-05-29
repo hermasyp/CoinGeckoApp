@@ -7,7 +7,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import javax.inject.Inject
+import com.catnip.coingeckoapp.R
+import com.catnip.coingeckoapp.base.exception.ApiErrorException
+import com.catnip.coingeckoapp.base.exception.NoInternetConnectionException
+import com.catnip.coingeckoapp.base.exception.UnexpectedApiErrorException
+import com.catnip.coingeckoapp.base.wrapper.ViewResource
+import java.lang.Exception
 
 /**
 Written with love by Muhammad Hermas Yuda Pamungkas
@@ -17,13 +22,9 @@ abstract class BaseActivity<B : ViewBinding, VM : ViewModel>(
     val bindingFactory: (LayoutInflater) -> B
 ) : AppCompatActivity(), BaseContract.BaseView {
 
-    private lateinit var binding: B
+    protected lateinit var binding: B
 
-    @Inject
-    lateinit var viewModelInstance: VM
-
-    fun getViewBinding(): B = binding
-    fun getViewModel(): VM = viewModelInstance
+    protected abstract val viewModel : VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,21 +35,78 @@ abstract class BaseActivity<B : ViewBinding, VM : ViewModel>(
     }
 
     abstract fun initView()
+
     override fun observeData() {
         //do nothing
     }
 
-    override fun showContent(isVisible: Boolean) {
+    override fun showEmptyData(isEmpty: Boolean) {
         //do nothing
     }
 
-    override fun showLoading(isVisible: Boolean) {
+    override fun showContent(isContentVisible: Boolean) {
         //do nothing
     }
 
-    override fun showError(isErrorEnabled: Boolean, msg: String?) {
-        if (isErrorEnabled) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    override fun showLoading(isShowLoading: Boolean) {
+        //do nothing
     }
+
+    override fun <T> showData(data: T) {
+        //do nothing
+    }
+
+    override fun showError(isErrorEnabled: Boolean,exception: Exception?) {
+        if (isErrorEnabled) {
+            Toast.makeText(this, getErrorMessageByException(exception), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    protected fun getErrorMessageByException(exception: Exception?) : String {
+        return when (exception){
+            is NoInternetConnectionException -> this.getString(R.string.no_internet_connection)
+            is ApiErrorException -> exception.message.orEmpty()
+            else -> this.getString(R.string.unknown_error)
+        }
+    }
+
+    override fun handleData(viewResource: ViewResource<*>?) {
+       viewResource?.let {
+           when (viewResource) {
+               is ViewResource.Success -> {
+                   showContent(true).also {
+                       showEmptyData(false)
+                       showData(viewResource.data)
+                   }
+                   showLoading(false)
+                   showError(false)
+               }
+               is ViewResource.Empty -> {
+                   showContent(false).also {
+                       showEmptyData(true)
+                   }
+                   showLoading(false)
+                   showError(false)
+               }
+               is ViewResource.Loading -> {
+                   showContent(false).also {
+                       showEmptyData(false)
+                   }
+                   showLoading(true)
+                   showError(false)
+
+               }
+               is ViewResource.Error -> {
+                   showContent(false).also {
+                       showEmptyData(false)
+                   }
+                   showLoading(false)
+                   showError(true,viewResource.exception)
+               }
+           }
+       }
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {

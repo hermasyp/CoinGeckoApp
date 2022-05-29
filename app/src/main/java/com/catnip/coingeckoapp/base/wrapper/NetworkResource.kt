@@ -7,12 +7,12 @@ Written with love by Muhammad Hermas Yuda Pamungkas
 Github : https://github.com/hermasyp
  **/
 
-sealed class Resource<T>(
+sealed class NetworkResource<T>(
     val data: T? = null,
     val message: String? = null,
     val exception: Exception? = null,
 ) {
-    class Success<T>(data: T) : Resource<T>(data)
-    class Loading<T>(data: T? = null) : Resource<T>(data)
-    class Error<T>(exception: Exception, data: T? = null) : Resource<T>(data, exception = exception)
+    class Success<T>(data: T) : NetworkResource<T>(data)
+    class Loading<T>(data: T? = null) : NetworkResource<T>(data)
+    class Error<T>(exception: Exception?, data: T? = null) : NetworkResource<T>(data, exception = exception)
 }
