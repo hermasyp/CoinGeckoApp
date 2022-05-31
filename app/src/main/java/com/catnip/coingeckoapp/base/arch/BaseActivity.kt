@@ -26,8 +26,14 @@ abstract class BaseActivity<B : ViewBinding, VM : ViewModel>(
 
     protected abstract val viewModel : VM
 
+
+    open fun onRetrieveIntentData(extras: Bundle?) {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onRetrieveIntentData(intent.extras)
         binding = bindingFactory(layoutInflater)
         setContentView(binding.root)
         initView()

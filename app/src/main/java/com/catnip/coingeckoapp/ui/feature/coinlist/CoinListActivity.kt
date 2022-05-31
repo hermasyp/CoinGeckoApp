@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.catnip.coingeckoapp.R
 import com.catnip.coingeckoapp.base.arch.BaseActivity
 import com.catnip.coingeckoapp.databinding.ActivityCoinListBinding
+import com.catnip.coingeckoapp.ui.feature.detailcoin.CoinDetailActivity
 import com.catnip.coingeckoapp.ui.viewparams.coin.CoinViewParam
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.lang.Exception
@@ -17,7 +18,7 @@ class CoinListActivity :
 
     private val adapter: CoinListAdapter by lazy {
         CoinListAdapter {
-            Toast.makeText(this@CoinListActivity, it.id, Toast.LENGTH_SHORT).show()
+            CoinDetailActivity.startActivity(this,it.id)
         }.also {
             binding.rvContent.apply {
                 layoutManager = LinearLayoutManager(this@CoinListActivity)

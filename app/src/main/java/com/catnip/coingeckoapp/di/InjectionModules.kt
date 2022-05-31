@@ -8,6 +8,7 @@ import com.catnip.coingeckoapp.data.repository.CoinRepositoryImpl
 import com.catnip.coingeckoapp.domain.GetCoinDetailUseCase
 import com.catnip.coingeckoapp.domain.GetCoinListUseCase
 import com.catnip.coingeckoapp.ui.feature.coinlist.CoinListViewModel
+import com.catnip.coingeckoapp.ui.feature.detailcoin.CoinDetailViewModel
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -37,5 +38,6 @@ object InjectionModules {
     }
     private val viewModels = module {
         viewModel { CoinListViewModel(get()) }
+        viewModel { CoinDetailViewModel(get()) }
     }
 }
