@@ -18,10 +18,6 @@ interface BaseContract {
         fun <T> showData(data : T)
     }
 
-    interface BaseViewModel {
-        fun logResponse(msg : String?)
-    }
-
     interface BaseRepository {
         fun logResponse(msg : String?)
     }
