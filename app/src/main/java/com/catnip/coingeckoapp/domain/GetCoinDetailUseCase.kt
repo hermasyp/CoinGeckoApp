@@ -5,6 +5,7 @@ import com.catnip.coingeckoapp.base.wrapper.NetworkResource
 import com.catnip.coingeckoapp.base.wrapper.ViewResource
 import com.catnip.coingeckoapp.data.repository.CoinRepository
 import com.catnip.coingeckoapp.ui.viewparams.coin.CoinDetailViewParam
+import com.catnip.coingeckoapp.ui.viewparams.coin.Mapper
 import com.catnip.coingeckoapp.ui.viewparams.coin.mapToViewParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
