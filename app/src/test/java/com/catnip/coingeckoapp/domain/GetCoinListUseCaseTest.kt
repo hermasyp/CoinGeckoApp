@@ -26,7 +26,7 @@ import org.junit.Test
  * Written with love by Muhammad Hermas Yuda Pamungkas
  * Github : https://github.com/hermasyp
  */
-class GetCoinListUseCaseTest{
+class GetCoinListUseCaseTest {
     @MockK
     lateinit var repository: CoinRepository
 
@@ -46,17 +46,17 @@ class GetCoinListUseCaseTest{
     fun execute_success() {
         runTest {
             val data = mutableListOf<Coin>().apply {
-                add(Coin("","","","",""))
+                add(Coin("", "", "", "", ""))
             }
             val returnData = mutableListOf<CoinViewParam>().apply {
-                add(CoinViewParam("","","","",""))
+                add(CoinViewParam("", "", "", "", ""))
             }
             mockkStatic(List<Coin>::mapToViewParams)
             every { data.mapToViewParams() } returns returnData
             every { repository.getCoins(any()) } returns flowOf(NetworkResource.Success(data))
             useCase.execute().test(this)
                 .satisfies { value ->
-                    assertEquals(value.data,returnData)
+                    assertEquals(value.data, returnData)
                 }
                 .finish()
         }
